@@ -144,9 +144,9 @@ function Update(timeDelta)
 	   p1.x=p1.x+p1.dx
 
 
-		 local xoffset=0 --moving left check the left side of sprite.
-	 	if p1.dx>0 then xoffset=7 end --moving right, check the right side.
-	 	local flag=Flag((p1.x+xoffset)/8,(p1.y+15)/8)
+		 local xoffset=3 --moving left check the left side of sprite.
+	 	if p1.dx>0 then xoffset=4 end --moving right, check the right side.
+	 	local flag=Flag((p1.x+xoffset)/8,(p1.y+11)/8)
 	  --look for a wall on either the left or right of the player
 	 	--and at the players feet.
 	 	--We divide by 8 to put the location in TileMap space (rather than
@@ -293,7 +293,7 @@ function Draw()
 
 		if command_prompt == true then
 			--DrawTilemap(0,0,32,31,0,1808)
-			MainMenu()
+			--MainMenu()
 			DrawText("bonjour", 16, 16, DrawMode.UI, "large", 4)
 		end
 	end
