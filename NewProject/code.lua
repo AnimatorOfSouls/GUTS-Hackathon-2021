@@ -24,7 +24,7 @@ p1=
 
 	--how fast the player is launched
 	--into the air when jumping.
-	jumpvel=3.0,
+	jumpvel=2.0,
 }
 
 g=
@@ -68,13 +68,13 @@ function Update(timeDelta)
       PlaySound(4, 1 )
       p1.dy=-p1.jumpvel
     end
+
   end
 
 	--left and right. We flip the sprite if going left
    if(Button(Buttons.left, InputState.Down, 0)) then
      p1.dx=-1
      flipH = true
-     print(os.difftime(os.clock(), timer))
      if(os.difftime(os.clock(), timer) > 0.1) then
        if(spriteId == 0 or spriteId == 38) then
          spriteId = 32
@@ -99,6 +99,8 @@ function Update(timeDelta)
  if(Button(Buttons.right, InputState.Down, 0) == false and Button(Buttons.left, InputState.Down, 0) == false) then
    spriteId = 0
  end
+
+
    --apply the horizontal acceleration
    p1.x=p1.x+p1.dx
 
@@ -133,6 +135,7 @@ function Update(timeDelta)
    --until we determine otherwise
    p1.isgrounded=false
 
+
    --only check for floors when
  	--moving downward
  	if p1.dy>=0 then
@@ -140,7 +143,6 @@ function Update(timeDelta)
  		--player.
 
  		local flag=Flag((p1.x+4)/8,(p1.y+8)/8)
-
   	--look for a solid tile
  		if flag==0 then
  			--place p1 on top of tile
@@ -149,6 +151,10 @@ function Update(timeDelta)
  			p1.dy = 0
  			--allow jumping again
  			p1.isgrounded=true
+    else
+      if(p1.dy > 0) then
+        spriteId = 68
+      end
  		end
  	end
 
@@ -157,6 +163,12 @@ function Update(timeDelta)
 	--only check for ceilings when
 	--moving up
 	if p1.dy<=0 then
+
+    if(p1.dy < -0.5) then
+      spriteId = 64
+    elseif(p1.dy < 0 and p1.dy > -0.5) then
+      spriteid = 66
+    end
 		--check top center of player
 		local flag=Flag((p1.x+4)/8,(p1.y)/8)
 		--look for solid tile
