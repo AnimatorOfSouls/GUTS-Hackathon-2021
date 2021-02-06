@@ -102,7 +102,7 @@ function Update(timeDelta)
 	 	p1.dx *= 0.9
 
 	  --jumping
-	  if(Button(Buttons.B, InputState.Released, 0)) then
+	  if(Button(Buttons.B, InputState.Down, 0)) then
 	    if p1.isgrounded then
 	      PlaySound(4, 1 )
 	      p1.dy=-p1.jumpvel
@@ -228,7 +228,7 @@ function Update(timeDelta)
 			end
 		end
 
-		if(Button(Buttons.A, InputState.Released, 0)) then
+		if(Button(Buttons.A, InputState.Down, 0)) then
 			if(math.abs(chest.x - (p1.x)/8) < 2) then
 				chest.id = 102
 			end
