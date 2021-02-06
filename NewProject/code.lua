@@ -1,12 +1,13 @@
-
-
-
 local xPos = 0
 local yPos = 4
 local flipH = false
 local spriteId = 0
 local timer
 local currentId
+
+-- telling if the command prompt is open or not
+local command_prompt = false
+
 --player information
 p1=
 {
@@ -40,7 +41,7 @@ g=
 function Init()
 
   -- Here we are manually changing the background color
-  BackgroundColor(0)
+  BackgroundColor(11)
 
   local display = Display()
 
@@ -54,6 +55,12 @@ end
   timeDelta, which is the difference in milliseconds since the last frame.
 ]]--
 function Update(timeDelta)
+	--checking if Select is pressed to open the command prompt
+	if Button(Buttons.Select, InputState.Down, 0) then
+		command_prompt = true
+	else
+		command_prompt = false
+	end
 
   --remember where we started
 	local startx=p1.x
@@ -198,7 +205,16 @@ function Draw()
   end
 
  --draws the whole visible tilemap.
- 	DrawTilemap()
+  DrawTilemap()
 
+
+
+  --draws command prompt
+  DrawSpriteBlock(134,Display().x-32,0,4,4)
+
+  if command_prompt == true then
+	DrawTilemap(0,0,32,31,0,1808)
+	DrawText("bonjour", 16, 16, DrawMode.UI, "large", 4)
+  end
 
 end
