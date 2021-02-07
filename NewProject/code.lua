@@ -49,8 +49,8 @@ chest=
 
 door=
 {
-	x=21,
-	y=11,
+	x=29,
+	y=1,
 	locked=true,
 	id=96
 }
