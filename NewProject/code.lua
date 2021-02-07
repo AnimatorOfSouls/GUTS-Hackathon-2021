@@ -39,7 +39,7 @@ p1=
 
 	--how fast the player is launched
 	--into the air when jumping.
-	jumpvel=2.0,
+	jumpvel=2.1,
 }
 
 chest=
@@ -151,7 +151,7 @@ function Update(timeDelta)
 
 
 		local xoffset=3 --moving left check the left side of sprite.
-		if p1.dx>0 then xoffset=4 end --moving right, check the right side.
+		if p1.dx>0 then xoffset=11 end --moving right, check the right side.
 		local flag=Flag((p1.x+xoffset)/8,(p1.y+11)/8)
 		--[[ look for a wall on either the left or right of the player and at the players feet.
 		We divide by 8 to put the location in TileMap space (rather than pixel space).
