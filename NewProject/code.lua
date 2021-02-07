@@ -67,7 +67,7 @@ g=
 function Init()
 	BackgroundColor(11)
 	local display = Display()
-	PlaySong(0, false, 0)
+	PlaySong(1,false,0)
 end
 
 
@@ -232,10 +232,12 @@ function Update(timeDelta)
 		-- check if tiles are being interacted with
 		if(Button(Buttons.A, InputState.Down, 0)) then
 			if((math.abs(chest.x - (p1.x)/8) < 2) and (math.abs(chest.y - (p1.y)/8) < 2)) then
+				PlaySound(6,0)
 				chest.id = 102
 				chest.opened = true
 			end
 			if((math.abs(door.x - (p1.x)/8) < 2) and (math.abs(door.y - (p1.y)/8) < 2) and (chest.opened == true)) then
+				PlaySound(6,0)
 				door.id = 98
 				game_over = true
 				game_play = false
