@@ -47,6 +47,7 @@ chest=
 	x=16,
 	y=20,
 	locked=true,
+	opened=false,
 	id=100,
 }
 
@@ -158,7 +159,7 @@ function Update(timeDelta)
 		The flag method basically gives us the flag ID of the corresponding position in the tilemap. --]]
 
 	 	-- We use flag 0  to represent solid walls. This is set in the tilemap tool
-	 	if flag==0 then
+	 	if flag==0 or (flag==5 and chest.opened) or (flag==3 and chest.opened == false) then
 	 		--[[ they hit a wall so move them back to their original pos.
 	 		it should really move them to the edge of the wall but this
 	 		mostly works and is simpler. --]]
@@ -188,7 +189,7 @@ function Update(timeDelta)
 			--check bottom center of the player.
 	 		local flag=Flag((p1.x+4)/8,(p1.y+16)/8)
 	  		--look for a solid tile
-	 		if flag==0 then
+	 		if flag==0 or (flag==5 and chest.opened) or (flag==3 and chest.opened == false) then
 	 			--place p1 on top of tile
 	 			p1.y = math.floor((p1.y)/8)*8
 	 			--halt velocity
@@ -216,7 +217,7 @@ function Update(timeDelta)
 			--check top center of player
 			local flag=Flag((p1.x+4)/8,(p1.y)/8)
 			--look for solid tile
-			if flag==0 then
+			if flag==0 or (flag==5 and chest.opened) or (flag==3 and chest.opened == false) then
 				--position p1 right below
 				--ceiling
 				p1.y = math.floor((p1.y+8)/8)*8
@@ -227,10 +228,11 @@ function Update(timeDelta)
 
 		-- check if tiles are being interacted with
 		if(Button(Buttons.A, InputState.Down, 0)) then
-			if(math.abs(chest.x - (p1.x)/8) < 2) then
+			if((math.abs(chest.x - (p1.x)/8) < 2) and (math.abs(chest.y - (p1.y)/8) < 2)) then
 				chest.id = 102
+				chest.opened = true
 			end
-			if(math.abs(door.x - (p1.x)/8) < 2) then
+			if((math.abs(door.x - (p1.x)/8) < 2) and (math.abs(door.y - (p1.y)/8) < 2) and (chest.opened == true)) then
 				door.id = 98
 				level = level + 1
 			end
