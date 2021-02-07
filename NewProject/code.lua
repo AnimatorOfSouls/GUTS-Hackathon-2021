@@ -234,7 +234,8 @@ function Update(timeDelta)
 			end
 			if((math.abs(door.x - (p1.x)/8) < 2) and (math.abs(door.y - (p1.y)/8) < 2) and (chest.opened == true)) then
 				door.id = 98
-				level = level + 1
+				game_play = false
+				game_over = true
 			end
 		end
 	end
@@ -328,7 +329,7 @@ function Draw()
 			DrawText(level,16,16,DrawMode.UI,"large")
 
 			-- draws command prompt icon in the top right of the screen
-			DrawSpriteBlock(134,Display().x-32,0,4,4)
+			--DrawSpriteBlock(134,Display().x-32,0,4,4)
 
 
 
@@ -339,7 +340,7 @@ function Draw()
 			-- choosing the code snippet to display based on the level
 			local cp_msg = {}
 			if level == 1 then
-				cp_msg = {"while !power:","\t\tdoor_unlocked = false"}
+				cp_msg = {"while !chest_opened:","\t\tplatorms_working = false"}
 			elseif level == 2 then
 				cp_msg = {"door_unlocked = false","","while True:","\t\tif fire == false:","\t\t\t\tdoor_unlocked = true"}
 			end
