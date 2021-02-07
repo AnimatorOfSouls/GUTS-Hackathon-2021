@@ -44,16 +44,16 @@ p1=
 
 chest=
 {
-	x=13,
-	y=12,
+	x=16,
+	y=20,
 	locked=true,
 	id=100,
 }
 
 door=
 {
-	x=21,
-	y=11,
+	x=29,
+	y=1,
 	locked=true,
 	id=96
 }
