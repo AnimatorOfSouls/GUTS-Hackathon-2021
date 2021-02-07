@@ -268,8 +268,8 @@ function Draw()
 		DrawTilemap(0,0,32,31,256,1808)
 
 		-- loading text box and displaying game title
-		local title = "Placeholder Title"
-		DrawText(title, 30, 70, DrawMode.UI, "large", 7)
+		DrawTilemap(37, 52, 13, 5, 0, 1768)
+		DrawText("Loop Break", 50, 68, DrawMode.UI, "large", 7)
 
 		-- displaying "press to start" text and making it blink
 		if blink >= 30 and blink < 60 then
