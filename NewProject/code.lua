@@ -14,9 +14,6 @@ local main_menu = true
 local game_play = false
 local game_over = false
 
--- determine which level the player is on
-local level = 1
-
 -- blinking text timer
 local blink = 0
 
@@ -91,75 +88,19 @@ function Update(timeDelta)
 
 	-- GAMEPLAY
 	if game_play == true then
-		-- if Select (default a) is pressed, open the command prompt
+		--checking if Select is pressed to open the command prompt
 		if Button(Buttons.Select, InputState.Down, 0) then
 			command_prompt = true
 		else
 			command_prompt = false
 		end
 
-
-
-		-- remember where we started
+		--remember where we started
 		local startx=p1.x
 
-		-- bleed off our horizontal speed from the last frame
+		--bleed off our horizontal speed from the last frame
 	 	p1.dx *= 0.9
 
-<<<<<<< HEAD
-		-- jumping when B is pressed (default c)
-		if(Button(Buttons.B, InputState.Down, 0)) then
-			if p1.isgrounded then
-				PlaySound(4, 1 )
-				p1.dy=-p1.jumpvel
-			end
-		end
-
-
-
-		-- movement left and right. We flip the sprite if going left
-		if(Button(Buttons.left, InputState.Down, 0)) then
-			p1.dx=-1
-			flipH = true
-
-			if(os.difftime(os.clock(), timer) > 0.1) then
-				if(spriteId == 0 or spriteId == 38) then
-					spriteId = 32
-				elseif(spriteId >= 32 and spriteId < 38) then
-					spriteId += 2
-				end
-			end
-		end
-
-		if(Button(Buttons.right, InputState.Down, 0)) then
-			p1.dx=1
-			flipH = false
-
-			if(os.difftime(os.clock(), timer) > 0.1) then
-				if(spriteId == 0 or spriteId == 38) then
-					spriteId = 32
-				elseif(spriteId >= 32 and spriteId < 38) then
-					spriteId += 2
-				end
-			end
-		end
-
-		-- if the player is standing still
-		if(Button(Buttons.right, InputState.Down, 0) == false and Button(Buttons.left, InputState.Down, 0) == false) then
-			spriteId = 0
-		end
-
-		-- apply the horizontal acceleration
-		p1.x=p1.x+p1.dx
-
-		-- checking for walls
-		local xoffset=0 --moving left check the left side of sprite.
-		if p1.dx>0 then xoffset=7 end --moving right, check the right side.
-		local flag=Flag((p1.x+xoffset)/8,(p1.y+15)/8)
-		--[[ look for a wall on either the left or right of the player and at the players feet.
-		We divide by 8 to put the location in TileMap space (rather than pixel space).
-		The flag method basically gives us the flag ID of the corresponding position in the tilemap.--]]
-=======
 	  --jumping
 	  if(Button(Buttons.B, InputState.Down, 0)) then
 	    if p1.isgrounded then
@@ -212,17 +153,18 @@ function Update(timeDelta)
 	 	--pixel space).
 		--The flag method basically gives us the flag ID of the corresponding position
 		-- in the tilemap.
->>>>>>> 22a0efd59315a82ba9805a32a056e6ced4750928
 
 	 	--We use flag 0  to represent solid walls. This is set in the tilemap tool
 	 	if flag==0 then
-	 		--[[ they hit a wall so move them back to their original pos.
-	 		it should really move them to the edge of the wall but this
-	 		mostly works and is simpler. --]]
+	 		--they hit a wall so move them
+	 		--back to their original pos.
+	 		--it should really move them to
+	 		--the edge of the wall but this
+	 		--mostly works and is simpler.
 	 		p1.x=startx
 	 	end
 
-		if flag==1 then
+		if flag ==1 then
 			showInteract = true
 		else
 			showInteract = false
@@ -230,24 +172,25 @@ function Update(timeDelta)
 
 
 
-		--accumulate gravity
-		p1.dy=p1.dy+g.grav
+	   --accumulate gravity
+	   p1.dy=p1.dy+g.grav
 
-		--apply gravity to the players position.
-		p1.y=p1.y+p1.dy
+	   --apply gravity to the players position.
+	   p1.y=p1.y+p1.dy
 
-		--assume they are floating
-		--until we determine otherwise
-		p1.isgrounded=false
+	   --assume they are floating
+	   --until we determine otherwise
+	   p1.isgrounded=false
 
 
-		--only check for floors when
-		--moving downward
-		if p1.dy>=0 then
-			--check bottom center of the player.
+	   --only check for floors when
+	 	--moving downward
+	 	if p1.dy>=0 then
+	 		--check bottom center of the
+	 		--player.
 
 	 		local flag=Flag((p1.x+4)/8,(p1.y+16)/8)
-	  		--look for a solid tile
+	  	--look for a solid tile
 	 		if flag==0 then
 	 			--place p1 on top of tile
 	 			p1.y = math.floor((p1.y)/8)*8
@@ -255,11 +198,11 @@ function Update(timeDelta)
 	 			p1.dy = 0
 	 			--allow jumping again
 	 			p1.isgrounded=true
-	    	else
-				if(p1.dy > 0) then
-					spriteId = 68
-				end
-			end
+	    else
+	      if(p1.dy > 0) then
+	        spriteId = 68
+	      end
+	 		end
 	 	end
 
 
@@ -267,12 +210,12 @@ function Update(timeDelta)
 		--only check for ceilings when
 		--moving up
 		if p1.dy<=0 then
-			if(p1.dy < -0.5) then
-				spriteId = 64
-			elseif(p1.dy < 0 and p1.dy > -0.5) then
-				spriteid = 66
-			end
 
+	    if(p1.dy < -0.5) then
+	      spriteId = 64
+	    elseif(p1.dy < 0 and p1.dy > -0.5) then
+	      spriteid = 66
+	    end
 			--check top center of player
 			local flag=Flag((p1.x+4)/8,(p1.y)/8)
 			--look for solid tile
@@ -325,51 +268,33 @@ function Draw()
 
 	-- GAMEPLAY
 	if game_play == true then
-		if command_prompt == false then
-		 	if(spriteId == currentId) then
-		    	DrawSpriteBlock(spriteId, p1.x, p1.y, 2, 2, flipH, false, DrawMode.Sprite)
-		 	else
-		    	currentId = spriteId
-		    	DrawSpriteBlock(spriteId, p1.x, p1.y, 2, 2, flipH, false, DrawMode.Sprite)
-		    	timer = os.clock()
-		  	end
+	 	if(spriteId == currentId) then
+	    	DrawSpriteBlock(spriteId, p1.x, p1.y, 2, 2, flipH, false, DrawMode.Sprite)
+	 	else
+	    	currentId = spriteId
+	    	DrawSpriteBlock(spriteId, p1.x, p1.y, 2, 2, flipH, false, DrawMode.Sprite)
+	    	timer = os.clock()
+	  	end
 
-			DrawSpriteBlock(chest.id, chest.x, chest.y, 2, 2, false, false, DrawMode.Tile)
-			DrawSpriteBlock(door.id, door.x, door.y, 2, 3, false, false, DrawMode.Tile)
+		DrawSpriteBlock(chest.id, chest.x, chest.y, 2, 2, false, false, DrawMode.Tile)
+		DrawSpriteBlock(door.id, door.x, door.y, 2, 3, false, false, DrawMode.Tile)
 
-		 	if showInteract == true then
-				DrawSpriteBlock( 132, p1.x, p1.y - 12, 2, 1, false, false, DrawMode.Sprite)
-			end
+	 	if showInteract == true then
+			DrawSpriteBlock( 132, p1.x, p1.y - 12, 2, 1, false, false, DrawMode.Sprite)
+		end
 
-			-- draws the whole visible tilemap.
-			DrawTilemap()
-
-			-- draws command prompt icon in the top right of the screen
-			DrawSpriteBlock(134,Display().x-32,0,4,4)
+		--draws the whole visible tilemap.
+		DrawTilemap()
 
 
 
-		-- if the command prompt is open
-		elseif command_prompt == true then
-			DrawTilemap(0,0,32,31,0,1808)
+		--draws command prompt
+		DrawSpriteBlock(134,Display().x-32,0,4,4)
 
-<<<<<<< HEAD
-			-- choosing the code snippet to display based on the level
-			local msg = {}
-			if level == 1 then
-				msg = {"door_unlocked = false","","while True:","\t\tif fire == false:","\t\t\t\tdoor_unlocked = true"}
-			end
-
-			-- displaying the code snippet
-			for i=1, #msg, 1 do
-				DrawText(msg[i], 24, 24 + ((i-1)*15), DrawMode.UI, "large", 7)
-			end
-=======
 		if command_prompt == true then
 			--DrawTilemap(0,0,32,31,0,1808)
 			--MainMenu()
 			DrawText("bonjour", 16, 16, DrawMode.UI, "large", 4)
->>>>>>> 22a0efd59315a82ba9805a32a056e6ced4750928
 		end
 	end
 end
