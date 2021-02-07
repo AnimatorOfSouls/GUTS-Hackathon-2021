@@ -89,6 +89,7 @@ function Update(timeDelta)
 	end
 
 
+
 	-- GAMEPLAY
 	if game_play == true then
 		-- if Select (default a) is pressed, open the command prompt
@@ -239,6 +240,13 @@ function Update(timeDelta)
 			end
 		end
 	end
+
+
+
+	-- GAME OVER
+	if game_over == true then
+
+	end
 end
 
 
@@ -309,5 +317,13 @@ function Draw()
 				DrawText(msg[i], 24, 24 + ((i-1)*15), DrawMode.UI, "large", 7)
 			end
 		end
+	end
+
+
+
+	-- GAME OVER
+	if game_over == true then
+		BackgroundColor(3)
+		DrawText("YOU ESCAPED!", 50, 50, DrawMode.UI, )
 	end
 end
