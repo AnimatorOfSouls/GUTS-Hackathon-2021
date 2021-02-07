@@ -106,6 +106,7 @@ function Update(timeDelta)
 		-- bleed off our horizontal speed from the last frame
 	 	p1.dx *= 0.9
 
+<<<<<<< HEAD
 		-- jumping when B is pressed (default c)
 		if(Button(Buttons.B, InputState.Down, 0)) then
 			if p1.isgrounded then
@@ -158,6 +159,60 @@ function Update(timeDelta)
 		--[[ look for a wall on either the left or right of the player and at the players feet.
 		We divide by 8 to put the location in TileMap space (rather than pixel space).
 		The flag method basically gives us the flag ID of the corresponding position in the tilemap.--]]
+=======
+	  --jumping
+	  if(Button(Buttons.B, InputState.Down, 0)) then
+	    if p1.isgrounded then
+	      PlaySound(4, 1 )
+	      p1.dy=-p1.jumpvel
+	    end
+
+	  end
+
+		--left and right. We flip the sprite if going left
+	   if(Button(Buttons.left, InputState.Down, 0)) then
+	     p1.dx=-1
+	     flipH = true
+	     if(os.difftime(os.clock(), timer) > 0.1) then
+	       if(spriteId == 0 or spriteId == 38) then
+	         spriteId = 32
+	       elseif(spriteId >= 32 and spriteId < 38) then
+	         spriteId += 2
+	       end
+	     end
+	   end
+
+	   if(Button(Buttons.right, InputState.Down, 0)) then
+	     p1.dx=1
+	     flipH = false
+	     if(os.difftime(os.clock(), timer) > 0.1) then
+	       if(spriteId == 0 or spriteId == 38) then
+	         spriteId = 32
+	       elseif(spriteId >= 32 and spriteId < 38) then
+	         spriteId += 2
+	       end
+	     end
+	   end
+
+	 if(Button(Buttons.right, InputState.Down, 0) == false and Button(Buttons.left, InputState.Down, 0) == false) then
+	   spriteId = 0
+	 end
+
+
+	   --apply the horizontal acceleration
+	   p1.x=p1.x+p1.dx
+
+
+		 local xoffset=3 --moving left check the left side of sprite.
+	 	if p1.dx>0 then xoffset=4 end --moving right, check the right side.
+	 	local flag=Flag((p1.x+xoffset)/8,(p1.y+11)/8)
+	  --look for a wall on either the left or right of the player
+	 	--and at the players feet.
+	 	--We divide by 8 to put the location in TileMap space (rather than
+	 	--pixel space).
+		--The flag method basically gives us the flag ID of the corresponding position
+		-- in the tilemap.
+>>>>>>> 22a0efd59315a82ba9805a32a056e6ced4750928
 
 	 	--We use flag 0  to represent solid walls. This is set in the tilemap tool
 	 	if flag==0 then
@@ -298,6 +353,7 @@ function Draw()
 		elseif command_prompt == true then
 			DrawTilemap(0,0,32,31,0,1808)
 
+<<<<<<< HEAD
 			-- choosing the code snippet to display based on the level
 			local msg = {}
 			if level == 1 then
@@ -308,6 +364,12 @@ function Draw()
 			for i=1, #msg, 1 do
 				DrawText(msg[i], 24, 24 + ((i-1)*15), DrawMode.UI, "large", 7)
 			end
+=======
+		if command_prompt == true then
+			--DrawTilemap(0,0,32,31,0,1808)
+			--MainMenu()
+			DrawText("bonjour", 16, 16, DrawMode.UI, "large", 4)
+>>>>>>> 22a0efd59315a82ba9805a32a056e6ced4750928
 		end
 	end
 end
