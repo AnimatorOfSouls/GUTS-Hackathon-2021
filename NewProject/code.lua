@@ -13,14 +13,12 @@ local command_prompt = false
 local main_menu = true
 local game_play = false
 local game_over = false
-
+local died = false
 -- determine which level the player is on
 local level = 1
 
 -- blinking text timer
 local blink = 0
-
-
 
 --player information
 p1=
@@ -28,7 +26,7 @@ p1=
 	--position, representing the top left of
 	--of the player sprite.
 	x=4,
-	y=10,
+	y=210,
 	dx=0,
 	dy=0,
 
@@ -79,6 +77,11 @@ end
 function Update(timeDelta)
 	-- MAIN MENU
 	if main_menu == true then
+		p1.x = 4
+		p1.y = 210
+		chest.opened=false
+		chest.id = 100
+		door.locked=false
 		-- If A is pressed (default x) then the user moves to the game
 		if Button(Buttons.A, InputState.Down, 0) then
 			main_menu = false
@@ -234,13 +237,20 @@ function Update(timeDelta)
 			end
 			if((math.abs(door.x - (p1.x)/8) < 2) and (math.abs(door.y - (p1.y)/8) < 2) and (chest.opened == true)) then
 				door.id = 98
-				game_play = false
 				game_over = true
+				game_play = false
 			end
 		end
 	end
 
-
+	local xoffset=3 --moving left check the left side of sprite.
+	if p1.dx>0 then xoffset=11 end --moving right, check the right side.
+	local flag=Flag((p1.x+xoffset)/8,(p1.y+11)/8)
+	if flag == 10 and chest.opened == true then
+		died = true
+		game_over = true
+		game_play = false
+	end
 
 	-- GAME OVER
 	if game_over == true then
@@ -300,7 +310,12 @@ function Draw()
 				-- displays sprites that can be interacted with (non-tilemap sprites)
 				DrawSpriteBlock(chest.id, chest.x, chest.y, 2, 2, false, false, DrawMode.Tile)
 				DrawSpriteBlock(door.id, door.x, door.y, 2, 3, false, false, DrawMode.Tile)
-
+				if chest.opened == true then
+					DrawSprite( 178, 2*8 , 24*8, false, false, DrawMode.SpriteBelow)
+					DrawSprite( 178, 3*8 , 24*8, false, false, DrawMode.SpriteBelow)
+					DrawSprite( 178, 5*8 , 24*8, false, false, DrawMode.SpriteBelow)
+					DrawSprite( 178, 6*8 , 24*8, false, false, DrawMode.SpriteBelow)
+				end
 				-- offset of the level on the tilemap
 				local l_map_x = 0
 				local l_map_y = 0
@@ -340,7 +355,7 @@ function Draw()
 			-- choosing the code snippet to display based on the level
 			local cp_msg = {}
 			if level == 1 then
-				cp_msg = {"while !chest_opened:","\t\tplatorms_working = false"}
+				cp_msg = {"while !power:","\t\tdoor_unlocked = false"}
 			elseif level == 2 then
 				cp_msg = {"door_unlocked = false","","while True:","\t\tif fire == false:","\t\t\t\tdoor_unlocked = true"}
 			end
@@ -357,8 +372,11 @@ function Draw()
 	-- GAME OVER
 	if game_over == true then
 		BackgroundColor(3)
-		DrawText("YOU ESCAPED!", 80, 100, DrawMode.UI, "large", 11)
-
+		if died == false then
+			DrawText("YOU ESCAPED!", 80, 100, DrawMode.UI, "large", 11)
+		else
+			DrawText("YOU DIED!", 80, 100, DrawMode.UI, "large", 11)
+		end
 		-- displaying "press to play again" text and making it blink
 		if blink >= 30 and blink < 60 then
 			DrawText("Press x to play again", 40, 200, DrawMode.UI, "large", 11)
